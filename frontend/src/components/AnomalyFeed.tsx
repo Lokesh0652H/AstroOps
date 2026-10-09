@@ -7,19 +7,29 @@ import { cn } from "@/lib/utils";
 
 interface AnomalyFeedProps {
   anomalies: AnomalyOut[];
+  loading?: boolean;
+  error?: boolean;
 }
 
-export default function AnomalyFeed({ anomalies }: AnomalyFeedProps) {
+export default function AnomalyFeed({ anomalies, loading = false, error = false }: AnomalyFeedProps) {
+  const emptyMessage = error
+    ? "Unable to load anomalies from the API. Check the connection and retry."
+    : loading
+      ? "Loading detected anomalies…"
+      : "No HIGH or CRITICAL anomalies detected. Use Inject failure to generate a simulated event.";
+
   return (
     <WidgetCard
       title="Anomaly feed"
-      subtitle="Ensemble detections with measured evidence"
+      subtitle="HIGH/CRITICAL ensemble detections with measured evidence"
       testid="anomaly-feed"
       highlight={anomalies.some((a) => a.risk_level === "CRITICAL")}
     >
       {anomalies.length === 0 ? (
         <div className="grid h-40 place-items-center">
-          <p className="text-sm text-muted-foreground">No anomalies in the current window — fleet nominal.</p>
+          <p className="max-w-sm text-center text-sm text-muted-foreground" role={error ? "alert" : undefined}>
+            {emptyMessage}
+          </p>
         </div>
       ) : (
         <div className="max-h-[360px] space-y-2.5 overflow-y-auto pr-1" aria-live="polite">

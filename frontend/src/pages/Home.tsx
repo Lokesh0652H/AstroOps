@@ -167,7 +167,11 @@ export default function Home() {
             <ForecastConfidenceView serviceId={serviceId} />
           </div>
           <div className="md:col-span-12 lg:col-span-6">
-            <AnomalyFeed anomalies={anomaliesQ.data ?? []} />
+            <AnomalyFeed
+              anomalies={anomaliesQ.data ?? []}
+              loading={anomaliesQ.isLoading}
+              error={anomaliesQ.isError && anomaliesQ.data === undefined}
+            />
           </div>
           <div className="md:col-span-12 lg:col-span-6">
             <RecommendationActuator

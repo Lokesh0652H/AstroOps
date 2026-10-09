@@ -23,10 +23,10 @@ const STATUS_BADGE: Record<string, string> = {
   dismissed: "bg-[#121C33] text-[#8B9BB4] border-[#223559]",
 };
 
-// An action may execute when the operator approved it, or when it is low-risk + bounded
-// and opened directly by policy (approval not required).
+// Execution eligibility mirrors the backend policy: approval is required only when
+// requires_approval is set; auto_eligible controls automatic execution by the engine.
 function canExecute(rec: RecommendationOut): boolean {
-  return rec.status === "approved" || (rec.status === "open" && rec.auto_eligible && !rec.requires_approval);
+  return rec.status === "approved" || (rec.status === "open" && !rec.requires_approval);
 }
 
 export default function RecommendationActuator({
