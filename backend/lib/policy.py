@@ -118,9 +118,33 @@ async def decide(
     """Map a detection (+ incident context) to a recommendation, or None. DECIDE stage."""
     service_id = service["id"]
 
-    # One live recommendation per service; cooldown after the last executed action.
-    if await db.recommendations.find_one({"service_id": service_id, "status": {"$in": ["open", "approved"]}}):
-        return None
+    # A medium-risk notification must not block incident remediation after risk escalates.
+    existing = await db.recommendations.find_one(
+        {"service_id": service_id, "status": {"$in": ["open", "approved"]}}
+    )
+    incident_needs_remediation = (
+        incident
+        and not incident.get("remediated_at")
+        and detection["risk_level"] in ("HIGH", "CRITICAL")
+    )
+    if existing:
+        if (
+            incident_needs_remediation
+            and existing["status"] == "open"
+            and existing["action_type"] == NOTIFY_ACTION["action_type"]
+        ):
+            await db.recommendations.update_one(
+                {"id": existing["id"]},
+                {"$set": {"status": "dismissed"}},
+            )
+            await audit(
+                "DECIDE",
+                f"Superseded notification for {service['name']} with incident remediation after risk escalated",
+                ref_type="recommendation",
+                ref_id=existing["id"],
+            )
+        else:
+            return None
     last_executed = await db.recommendations.find_one(
         {"service_id": service_id, "status": "executed"},
         sort=[("executed_at", -1)],
