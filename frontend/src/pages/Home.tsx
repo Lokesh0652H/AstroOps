@@ -147,6 +147,7 @@ export default function Home() {
           recommendations={recsQ.data ?? []}
           verifications={verifsQ.data ?? []}
           incidents={incidentsQ.data ?? []}
+          auditEvents={auditQ.data ?? []}
         />
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-5">

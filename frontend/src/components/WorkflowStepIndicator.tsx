@@ -1,7 +1,15 @@
 import { ChevronRight } from "lucide-react";
 import { STAGE_COLORS } from "@/lib/levels";
 import { WORKFLOW_STAGES } from "@/lib/types";
-import type { AnomalyOut, FleetOverview, IncidentOut, RecommendationOut, VerificationOut, WorkflowStage } from "@/lib/types";
+import type {
+  AnomalyOut,
+  AuditEventOut,
+  FleetOverview,
+  IncidentOut,
+  RecommendationOut,
+  VerificationOut,
+  WorkflowStage,
+} from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 interface WorkflowStepIndicatorProps {
@@ -10,15 +18,17 @@ interface WorkflowStepIndicatorProps {
   recommendations: RecommendationOut[];
   verifications: VerificationOut[];
   incidents: IncidentOut[];
+  auditEvents: AuditEventOut[];
 }
 
-// Which pipeline stage is currently doing work — derived from live data, not a timer.
+// Stage activity is derived from persisted pipeline records, not a timer.
 function stageActivity(
   overview: FleetOverview | undefined,
   anomalies: AnomalyOut[],
   recommendations: RecommendationOut[],
   verifications: VerificationOut[],
   incidents: IncidentOut[],
+  auditEvents: AuditEventOut[],
 ): Record<WorkflowStage, { active: boolean; count?: number }> {
   return {
     OBSERVE: { active: !!overview?.engine_alive },
@@ -29,8 +39,14 @@ function stageActivity(
       count: recommendations.filter((r) => r.status === "open" || r.status === "approved").length,
     },
     ACT: { active: recommendations.some((r) => r.status === "approved" || r.status === "executed") },
-    VERIFY: { active: incidents.some((i) => i.status === "MITIGATING") },
-    LEARN: { active: verifications.length > 0, count: verifications.length },
+    VERIFY: {
+      active: incidents.some((i) => i.status === "MITIGATING") || verifications.length > 0,
+      count: verifications.length,
+    },
+    LEARN: {
+      active: auditEvents.some((event) => event.stage === "LEARN"),
+      count: auditEvents.filter((event) => event.stage === "LEARN").length,
+    },
   };
 }
 
@@ -40,8 +56,9 @@ export default function WorkflowStepIndicator({
   recommendations,
   verifications,
   incidents,
+  auditEvents,
 }: WorkflowStepIndicatorProps) {
-  const activity = stageActivity(overview, anomalies, recommendations, verifications, incidents);
+  const activity = stageActivity(overview, anomalies, recommendations, verifications, incidents, auditEvents);
 
   return (
     <div
