@@ -13,6 +13,6 @@ services:
       - key: DB_NAME
         value: astraops
       - key: CORS_ORIGINS
-        value: https://frontend-lokeshkhodke456-2902s-projects.vercel.app
+        value: https://frontend-omega-five-91.vercel.app,https://frontend-lokeshkhodke456-2902s-projects.vercel.app
       - key: MONGO_URL
         sync: false
