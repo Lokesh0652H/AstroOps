@@ -1,0 +1,181 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/manrope";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: 'Manrope Variable', sans-serif;
+    --font-sans: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* AstraOps AI — cosmic tactical observability palette (dark-by-default app; html carries
+   the `dark` class and both token blocks stay identical). */
+:root {
+    --background: #060A14;
+    --foreground: #F0F6FC;
+    --card: #0D1424;
+    --card-foreground: #F0F6FC;
+    --popover: #0A101E;
+    --popover-foreground: #F0F6FC;
+    --primary: #00F0FF;
+    --primary-foreground: #04101A;
+    --secondary: #121C33;
+    --secondary-foreground: #F0F6FC;
+    --muted: #0A101E;
+    --muted-foreground: #8B9BB4;
+    --accent: #12213B;
+    --accent-foreground: #7DD3FC;
+    --destructive: #F87171;
+    --border: #1E2A44;
+    --input: #223559;
+    --ring: #00F0FF;
+    --chart-1: #00F0FF;
+    --chart-2: #38BDF8;
+    --chart-3: #3B82F6;
+    --chart-4: #FBBF24;
+    --chart-5: #F87171;
+    --radius: 0.5rem;
+    --sidebar: #0D1424;
+    --sidebar-foreground: #F0F6FC;
+    --sidebar-primary: #00F0FF;
+    --sidebar-primary-foreground: #04101A;
+    --sidebar-accent: #121C33;
+    --sidebar-accent-foreground: #F0F6FC;
+    --sidebar-border: #1E2A44;
+    --sidebar-ring: #00F0FF;
+}
+
+.dark {
+    --background: #060A14;
+    --foreground: #F0F6FC;
+    --card: #0D1424;
+    --card-foreground: #F0F6FC;
+    --popover: #0A101E;
+    --popover-foreground: #F0F6FC;
+    --primary: #00F0FF;
+    --primary-foreground: #04101A;
+    --secondary: #121C33;
+    --secondary-foreground: #F0F6FC;
+    --muted: #0A101E;
+    --muted-foreground: #8B9BB4;
+    --accent: #12213B;
+    --accent-foreground: #7DD3FC;
+    --destructive: #F87171;
+    --border: #1E2A44;
+    --input: #223559;
+    --ring: #00F0FF;
+    --chart-1: #00F0FF;
+    --chart-2: #38BDF8;
+    --chart-3: #3B82F6;
+    --chart-4: #FBBF24;
+    --chart-5: #F87171;
+    --radius: 0.5rem;
+    --sidebar: #0D1424;
+    --sidebar-foreground: #F0F6FC;
+    --sidebar-primary: #00F0FF;
+    --sidebar-primary-foreground: #04101A;
+    --sidebar-accent: #121C33;
+    --sidebar-accent-foreground: #F0F6FC;
+    --sidebar-border: #1E2A44;
+    --sidebar-ring: #00F0FF;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(1100px 520px at 85% -10%, rgba(59, 130, 246, 0.14), transparent 60%),
+      radial-gradient(900px 480px at -10% 110%, rgba(0, 240, 255, 0.09), transparent 55%);
+    background-attachment: fixed;
+    }
+  html {
+    @apply font-sans;
+    }
+  h1, h2, h3, h4 {
+    @apply font-heading;
+    }
+}
+
+@layer utilities {
+  .text-glow-cyan {
+    text-shadow: 0 0 14px rgba(0, 240, 255, 0.5);
+  }
+  .accent-bar-top {
+    height: 1px;
+    background-image: linear-gradient(90deg, #00F0FF, #3B82F6 55%, transparent);
+  }
+  .radar-dot {
+    position: relative;
+    display: inline-flex;
+  }
+  .radar-dot::after {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    border-radius: 9999px;
+    border: 1px solid currentColor;
+    animation: radar-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  .flash-metric {
+    animation: metric-flash 0.7s ease-out;
+  }
+}
+
+@keyframes radar-ping {
+  0% { transform: scale(0.5); opacity: 0.9; }
+  80%, 100% { transform: scale(2.6); opacity: 0; }
+}
+
+@keyframes metric-flash {
+  0% { background-color: rgba(0, 240, 255, 0.14); }
+  100% { background-color: transparent; }
+}
